@@ -103,26 +103,28 @@ const SideDrawer = () => {
     };
 
     return (
-        <div className="flex items-center justify-between bg-white dark:bg-slate-900 px-6 py-3 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
-            <div className="flex items-center gap-4">
+        <div className="flex w-full max-w-full items-center justify-between bg-white dark:bg-slate-900 px-3 md:px-6 py-3 pt-[calc(env(safe-area-inset-top)+0.75rem)] border-b border-slate-200 dark:border-slate-800 transition-colors duration-300 relative overflow-hidden">
+            <div className="flex items-center gap-2 md:gap-4">
                 <button
                     onClick={() => setShowSearch(true)}
-                    className="flex items-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 px-4 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:text-white transition-all"
+                    className="flex items-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:text-white transition-all"
                 >
                     <Search size={18} />
                     <span className="hidden md:block font-medium">Search Users</span>
                 </button>
             </div>
 
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+            <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent absolute left-1/2 -translate-x-1/2">
                 Letme
             </h1>
 
             <div className="flex items-center gap-2 md:gap-4">
-                <ThemeToggle />
+                <div className="scale-75 md:scale-100 origin-right">
+                    <ThemeToggle />
+                </div>
 
                 <div
-                    className="flex items-center gap-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-1 rounded-lg transition-all"
+                    className="flex items-center gap-2 md:gap-3 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 p-1 rounded-lg transition-all"
                     onClick={() => {
                         setNewName(user.name);
                         setNewAvatar(user.avatar || "");
@@ -136,12 +138,12 @@ const SideDrawer = () => {
                     <img
                         src={user?.avatar || "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
                         alt={user?.name}
-                        className="h-10 w-10 rounded-full border-2 border-primary/20 object-cover"
+                        className="h-8 w-8 md:h-10 md:w-10 rounded-full border-2 border-primary/20 object-cover"
                     />
                 </div>
                 <button
                     onClick={logout}
-                    className="rounded-lg p-2 text-slate-400 hover:bg-red-500/10 hover:text-red-500 transition-all"
+                    className="rounded-lg p-2 text-slate-400 hover:bg-red-500/10 hover:text-red-500 transition-all scale-90 md:scale-100"
                 >
                     <LogOut size={20} />
                 </button>

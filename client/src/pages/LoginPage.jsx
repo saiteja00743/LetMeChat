@@ -108,14 +108,18 @@ const LoginPage = () => {
                         </div>
                     </div>
 
-                    <div className="flex justify-center w-full">
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={() => toast.error("Google Login Failed")}
-                            theme="filled_blue"
-                            shape="pill"
-                            width="100%"
-                        />
+                    <div className="flex justify-center w-full min-h-[44px]">
+                        {import.meta.env.VITE_GOOGLE_CLIENT_ID ? (
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={() => toast.error("Google Login Failed")}
+                                theme="filled_blue"
+                                shape="pill"
+                                width="340"
+                            />
+                        ) : (
+                            <div className="text-red-500 text-xs">Google Client ID Missing</div>
+                        )}
                     </div>
                 </div>
 

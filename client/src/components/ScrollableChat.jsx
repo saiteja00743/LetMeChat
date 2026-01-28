@@ -47,22 +47,12 @@ const ScrollableChat = ({ messages, onDelete, onEdit }) => {
             {messages &&
                 messages.map((m, i) => (
                     <div
-                        className={`flex items-end gap-3 px-2 ${m.sender._id === user._id ? "justify-end" : "justify-start"
+                        className={`flex items-end gap-1 px-2 mb-1.5 ${m.sender._id === user._id ? "justify-end" : "justify-start"
                             }`}
                         key={m._id}
                     >
-                        {(isSameSender(messages, m, i, user._id) ||
-                            isLastMessage(messages, i, user._id)) ? (
-                            <img
-                                src={m.sender.avatar || "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
-                                alt={m.sender.name}
-                                className="h-8 w-8 rounded-full cursor-pointer hover:scale-105 transition-transform object-cover shadow-sm bg-slate-300"
-                                title={m.sender.name}
-                            />
-                        ) : (
-                            <div className="w-8"></div>
-                        )}
-                        <div className={`group relative flex items-center max-w-[80%] md:max-w-[70%]`}>
+                        {/* Remove avatar to save space and match WhatsApp individual chat style */}
+                        <div className={`group relative flex items-center max-w-[85%] md:max-w-[75%]`}>
                             {m.sender._id === user._id && (
                                 <div className="absolute -left-12 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
@@ -82,10 +72,10 @@ const ScrollableChat = ({ messages, onDelete, onEdit }) => {
                             <motion.span
                                 initial={{ scale: 0.95, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
-                                className={`relative px-5 py-2.5 text-[15px] shadow-sm break-words leading-relaxed ${m.sender._id === user._id
-                                    ? "bg-blue-600 text-white rounded-2xl rounded-tr-sm"
-                                    : "bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-2xl rounded-tl-sm border border-slate-200/50 dark:border-slate-600/50"
-                                    }`}
+                                className={`relative shadow-sm break-words leading-tight ${m.sender._id === user._id
+                                    ? "bg-blue-600 text-white rounded-2xl rounded-tr-none"
+                                    : "bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-2xl rounded-tl-none border border-slate-200/50 dark:border-slate-600/50"
+                                    } ${m.attachmentType === 'image' ? 'p-1.5' : 'px-4 py-2 text-[14px]'}`}
                                 style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
                             >
                                 {/* Render file attachments */}
@@ -147,7 +137,7 @@ const ScrollableChat = ({ messages, onDelete, onEdit }) => {
 
                                         {/* Caption/Content */}
                                         {m.content && !m.content.startsWith('[GIF]') && (
-                                            <p className="mt-1">{m.content}</p>
+                                            <p className="mt-1 px-2.5 pb-0.5 text-[14px]">{m.content}</p>
                                         )}
                                     </div>
                                 ) : (
@@ -181,6 +171,7 @@ const ScrollableChat = ({ messages, onDelete, onEdit }) => {
                         </div>
                     </div>
                 ))}
+            <div className="h-10 w-full" />
             <div ref={messagesEndRef} />
         </div>
     );

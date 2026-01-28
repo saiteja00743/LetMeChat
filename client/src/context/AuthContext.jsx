@@ -10,12 +10,17 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        setUser(userInfo);
-
-        if (!userInfo && location.pathname !== "/signup") {
+        if (userInfo) {
+            setUser(userInfo);
+            // If user is logged in and tries to access login/signup, redirect to chats
+            if (location.pathname === "/" || location.pathname === "/signup") {
+                navigate("/chats");
+            }
+        } else if (location.pathname !== "/signup") {
+            // If no user and not on signup, must be on login
             navigate("/");
         }
-    }, [navigate]);
+    }, [navigate, location.pathname]);
 
     const login = (data) => {
         localStorage.setItem("userInfo", JSON.stringify(data));

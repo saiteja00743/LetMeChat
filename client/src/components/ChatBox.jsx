@@ -10,7 +10,7 @@ import EmojiPicker from "emoji-picker-react";
 import { GiphyFetch } from "@giphy/js-fetch-api";
 import { Grid } from "@giphy/react-components";
 
-const ENDPOINT = "http://10.75.221.145:5000";
+const ENDPOINT = "https://web-production-beedf.up.railway.app";
 const gf = new GiphyFetch("sXpGFDGZs0Dv1mmNFvYaGUvYwKX0PWIh");
 var socket, selectedChatCompare;
 
@@ -326,7 +326,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
     return (
         <div
             className={`${selectedChat ? "flex" : "hidden"
-                } md:flex flex-col flex-1 h-full bg-slate-50 dark:bg-slate-900 transition-colors duration-300 relative`}
+                } md:flex flex-col flex-1 h-full bg-slate-50 dark:bg-slate-900 transition-colors duration-300 relative max-w-full overflow-x-hidden`}
         >
             {selectedChat ? (
                 <>
@@ -354,7 +354,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                     </div>
 
                     {/* Messages Area */}
-                    <div className="flex-1 overflow-y-auto p-4 md:p-6 flex flex-col min-h-0">
+                    <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4 md:p-6 flex flex-col min-h-0">
                         {loading ? (
                             <div className="flex h-full items-center justify-center">
                                 <Loader2 className="animate-spin text-primary" size={48} />
@@ -439,84 +439,73 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
                     )}
 
                     {/* Input Area */}
-                    <div className="p-6 bg-white dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 transition-colors">
-                        <div className="relative flex items-center gap-2">
-                            {/* Emoji Button */}
-                            <button
-                                onClick={() => {
-                                    setShowEmojiPicker(!showEmojiPicker);
-                                    setShowGifPicker(false);
-                                }}
-                                className={`p-2.5 rounded-xl transition-all ${showEmojiPicker ? 'bg-primary text-white' : 'text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800'}`}
-                            >
-                                <Smile size={22} />
-                            </button>
-
-                            {/* GIF Button */}
-                            <button
-                                onClick={() => {
-                                    setShowGifPicker(!showGifPicker);
-                                    setShowEmojiPicker(false);
-                                }}
-                                className={`p-2 rounded-lg transition-colors ${showGifPicker ? 'bg-primary text-white' : 'text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'}`}
-                            >
-                                <ImageIcon size={20} />
-                            </button>
-
-                            {/* File Attachment Button */}
-                            <button
-                                onClick={() => fileInputRef.current?.click()}
-                                disabled={uploadingFile}
-                                className={`p-2 rounded-lg transition-colors ${selectedFile ? 'bg-primary text-white' : 'text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'} disabled:opacity-50`}
-                            >
-                                <Paperclip size={20} />
-                            </button>
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                onChange={handleFileSelect}
-                                className="hidden"
-                                accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt"
-                            />
-
-                            {/* Message Input */}
-                            <input
-                                className="flex-1 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-3 px-6 outline-none focus:border-primary/50 transition-all text-sm text-slate-800 dark:text-white"
-                                placeholder={selectedFile ? "Add a caption (optional)..." : editingMessage ? "Edit message..." : "Type a message..."}
-                                onChange={typingHandler}
-                                value={newMessage}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        editingMessage ? updateMessageHandler() : sendMessage(e);
-                                    }
-                                }}
-                            />
-
-                            {/* Cancel Edit Button */}
-                            {editingMessage && (
+                    <div className="p-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors">
+                        <div className="flex items-end gap-2 max-w-4xl mx-auto px-1">
+                            {/* Input Container */}
+                            <div className="flex-1 flex items-center bg-slate-50 dark:bg-slate-800 rounded-[28px] min-h-[50px] border border-slate-200 dark:border-slate-700 transition-all shadow-sm">
+                                {/* Emoji Button */}
                                 <button
                                     onClick={() => {
-                                        setEditingMessage(null);
-                                        setNewMessage("");
+                                        setShowEmojiPicker(!showEmojiPicker);
+                                        setShowGifPicker(false);
                                     }}
-                                    className="p-2 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                                    className={`p-2.5 ml-1 rounded-full text-slate-500 hover:text-primary transition-colors ${showEmojiPicker ? 'text-primary bg-primary/10' : ''}`}
                                 >
-                                    <X size={20} />
+                                    <Smile size={24} />
                                 </button>
-                            )}
 
-                            {/* Send Button */}
+                                {/* Message Input */}
+                                <input
+                                    className="flex-1 bg-transparent py-3 px-1 outline-none text-[16px] text-slate-800 dark:text-white placeholder-slate-500 min-w-0"
+                                    placeholder="Message"
+                                    onChange={typingHandler}
+                                    value={newMessage}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            if (editingMessage) { updateMessageHandler(); }
+                                            else if (newMessage.trim() || selectedFile) { sendMessage(e); }
+                                        }
+                                    }}
+                                />
+
+                                {/* Accessory Buttons */}
+                                <div className="flex items-center pr-1 gap-0.5">
+                                    <button
+                                        onClick={() => fileInputRef.current?.click()}
+                                        disabled={uploadingFile}
+                                        className="p-2.5 text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors disabled:opacity-50"
+                                    >
+                                        <Paperclip size={22} className="-rotate-45" />
+                                    </button>
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        onChange={handleFileSelect}
+                                        className="hidden"
+                                        accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt"
+                                    />
+
+                                    <button
+                                        onClick={() => setShowGifPicker(!showGifPicker)}
+                                        className={`p-2.5 text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors ${showGifPicker ? 'text-primary bg-primary/10 rounded-full' : ''}`}
+                                    >
+                                        <ImageIcon size={22} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Send Button Group */}
                             <button
                                 onClick={editingMessage ? updateMessageHandler : sendMessage}
-                                disabled={(!newMessage && !selectedFile) || uploadingFile}
-                                className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-white hover:bg-blue-600 transition-all disabled:opacity-50 disabled:grayscale"
+                                disabled={(!newMessage.trim() && !selectedFile) || uploadingFile}
+                                className={`flex h-[50px] w-[50px] items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all active:scale-90 transform ${(!newMessage.trim() && !selectedFile) ? 'opacity-100 brightness-90' : 'opacity-100 scale-100 ring-2 ring-blue-500/20'}`}
                             >
                                 {uploadingFile ? (
-                                    <Loader2 className="animate-spin" size={18} />
+                                    <Loader2 className="animate-spin" size={20} />
                                 ) : editingMessage ? (
-                                    <Check size={18} />
+                                    <Check size={22} />
                                 ) : (
-                                    <Send size={18} />
+                                    <Send size={22} className="ml-0.5" />
                                 )}
                             </button>
                         </div>
