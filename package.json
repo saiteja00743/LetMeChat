@@ -8,7 +8,9 @@
     "server": "nodemon server/index.js",
     "client": "npm run dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install --prefix client && npm run build --prefix client"
+    "build": "npm install --prefix client && npm run build --prefix client",
+    "android:prep": "cd client && npm run build && npx cap sync",
+    "android:open": "cd client && npx cap open android"
   },
   "dependencies": {
     "concurrently": "^9.2.1"
